@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.applet.Applet;
 import java.awt.*;
 import java.util.Random;
@@ -5,47 +6,64 @@ import java.util.Random;
 /**
  * Created by akhilthampy on 10/10/14.
  */
-public class Game extends Applet {
-    private int[][] board;
-
-    public void init() {
-        board = new int[3][3];
-    }
-    public void paint(Graphics g) {
-        Color background = new Color(187, 173, 160);
-        Color empty_tile = new Color(204, 192, 179);
-        Color tile_color = new Color(238, 228, 218);
-
-        g.setColor(background);
-        g.fillRect(0, 0, 900, 900);
-        g.setColor(empty_tile);
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board[i].length; j++) {
-                if (board[i][j] != -1) {
-                    g.setColor(tile_color);
-                    g.fillRect(i * 10, j * 10, 100, 100);
-                }
-                g.setColor(empty_tile);
-                g.drawRect(i * 10, j * 10, 100, 100);
+public class Game extends JApplet {
+   /*
+   *    int matrix to store values of tiles
+   *    add_tile()
+   *    merge_tiles(char dir)
+   *    paint()
+   * */
+    public void init()
+    {
+     board = new Tile[3][3];
+        for(int i=0;i<3;i++)
+        {
+            for(int j=0;j<3;j++)
+            {
+                board[i][j]= new Tile();
             }
         }
-        repaint();
     }
-    public void add_tile() {
+    Tile[][] board;
+    public void add_tile()
+    {
         Random rand = new Random();
         boolean flag = false;
-        while (!flag) {
-            int i = rand.nextInt(3);
-            int j = rand.nextInt(3);
-            if (board[i][j] == -1) {
-                board[i][j] = 2;
-                flag = true;
+        int i,j;
+        while(!flag)
+        {
+            i = rand.nextInt(3);
+            j = rand.nextInt(3);
+            if(board[i][j].isempty)
+            {
+                board[i][j].setValue(2);
+                board[i][j].isempty = false;
             }
         }
-
-
     }
-
-    public void merge(int x1, int y1, int x2, int y2, char dir) {
-    }
-}
+    public void merge(char dir)
+    {}
+    public void paint(Graphics g)
+     {
+         this.setSize(320,320);
+         Color BG = new Color(0xBBADA0);
+         Color empty_tile = new Color(0xCCC0B3);
+         Color default_tile = new Color(0xEEE4DA);
+         g.setColor(BG);
+         g.drawRect(0,0,320,320);
+         g.setColor(empty_tile);
+         for (int i = 0; i < board.length; i++) {
+             for (int j = 0; j < board[i].length; j++) {
+                 if(!board[i][j].isempty)
+                 {
+                     g.setColor(default_tile);
+                 }
+                 else
+                 {
+                     g.setColor(empty_tile);
+                 }
+                 g.fillRect(i*100 + 10,j*100+ 10, 100,100);
+             }
+         }
+     }
+ }
